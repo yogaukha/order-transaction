@@ -36,7 +36,21 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         if ($this->auth->guard($guard)->guest()) {
-            return response('Unauthorized.', 401);
+            if($request->has('api_token')){
+                $tokenForm = $request->input('api_token');
+                $tokenDb = User::where('api_token', $tokenForm)->first();
+                if(empty($tokenDb)){
+                    $response['success'] = false;
+                    $response['message'] = 'Mismatch Token!';
+
+                    return response($response);
+                }
+            }else{
+                $response['success'] = false;
+                $response['message'] = 'Please login first!';
+
+                return response($response);
+            }
         }
 
         return $next($request);
