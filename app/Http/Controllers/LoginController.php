@@ -45,10 +45,15 @@ class LoginController extends Controller
 
 	                return response($response);
     			}
-    		}
+    		}else{
+                $response['success'] = false;
+                $response['message'] = 'Incorrect Email or Password!';
+
+                return response($response);
+            }
     	}else{
 			$response['success'] = false;
-	        $response['message'] = 'We did not recognize your Username or Password!';
+	        $response['message'] = 'We did not recognize your Email or Password!';
 
 	        return response($response);
     	}
