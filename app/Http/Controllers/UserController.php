@@ -72,4 +72,26 @@ class UserController extends Controller
 
         }
     }
+
+    /**
+     * Validate User using their api_token
+     *
+     * @param $request Request
+     * @url /user/api/{api_token}
+     */
+    public function getUserApi(Request $request, $api_token){
+        $user = User::where('api_token', $api_token)->first();
+        if ($user) {
+            $response['success'] = true;
+            $response['message'] = $user;
+
+            return response($response);
+        }else{
+            $response['success'] = false;
+            $response['message'] = 'API KEY Invalid!';
+
+            return response($response);
+
+        }
+    }
 }
